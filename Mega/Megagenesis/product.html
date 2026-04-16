@@ -6,21 +6,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product Details - Megalok</title>
 
+    <!-- External font + browser tab icon -->
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="Logo-removebg-preview.png">
 
+    <!-- Global stylesheet and product-page stylesheet -->
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="product.css">
 
+    <!-- Apply preload dark mode class before the page fully renders -->
     <script>
         if (localStorage.getItem('darkMode') === 'enabled') {
             document.documentElement.classList.add('dark-mode-preload');
         }
     </script>
-</head>
+</head>     
 
-<body>
+<body>  
 
+    <!-- Header: logo, navigation menu, and dark mode toggle -->
     <header>
     <div class="logo">
         <a href="index.html">
@@ -80,10 +84,12 @@
     </section> -->
 
     <main>
+        <!-- Dynamic product details will be rendered here by JavaScript -->
         <section class="product-detail-container" id="product-display">
         </section>
     </main>
 
+    <!-- Footer: contact information and social links -->
     <footer id="contact">
         <div class="footer-banner">
             <div class="footer-logo-area">
@@ -115,6 +121,10 @@
     </footer>
 
     <script>
+        // Page script overview:
+        // 1) optional banner slider
+        // 2) product lookup by URL id and render
+        // 3) dark mode state + toggle
         // ==========================================
         // 1. ระบบ Banner Slideshow แบบเลื่อน (Slide)
         // ==========================================
@@ -122,6 +132,7 @@
         const slidesWrapper = document.getElementById("slidesWrapper");
         const slides = document.getElementsByClassName("slide");
 
+        // Automatically move to the next banner every 3 seconds
         function autoSlide() {
             if (!slidesWrapper || slides.length === 0) return;
 
@@ -146,6 +157,7 @@
         // ==========================================
         // 2. ระบบดึงและแสดงข้อมูลสินค้าตาม ID จาก URL
         // ==========================================
+        // Local "database" for products shown on this page
         const productsDatabase = [
             {
                 id: 1,
@@ -190,14 +202,17 @@
         ];
 
         // รับค่า id จากพารามิเตอร์ใน URL (เช่น product.html?id=1)
+        // Read `id` from query string, for example: product.html?id=2
         const urlParams = new URLSearchParams(window.location.search);
         const productId = parseInt(urlParams.get('id'));
 
         // หาสินค้าที่ตรงกับ ID
+        // Find the matching product and where to display it
         const product = productsDatabase.find(p => p.id === productId);
         const displayDiv = document.getElementById('product-display');
 
         // ฟังก์ชันสำหรับเปลี่ยนรูปภาพใหญ่ เมื่อผู้ใช้คลิกที่รูป Thumbnail เล็ก
+        // Switch the main image when a thumbnail is clicked
         window.changeImage = function (newSrc) {
             const mainImg = document.getElementById('mainImage');
             mainImg.style.opacity = 0.5;
@@ -208,6 +223,7 @@
         };
 
         // Render ข้อมูลลง HTML
+        // Render product details or fallback error message
         if (product) {
             let thumbnailsHTML = '';
             product.images.forEach((imgSrc, index) => {
@@ -251,6 +267,7 @@
         // ==========================================
         // 3. ระบบ Dark Mode (อ่านค่าและสลับโหมด)
         // ==========================================
+        // Toggle element and target body class
         const darkModeToggle = document.getElementById('darkModeToggle');
         const body = document.body;
 
@@ -264,6 +281,7 @@
         }
 
         if (darkModeToggle) {
+            // Persist user preference in localStorage
             darkModeToggle.addEventListener('click', () => {
                 body.classList.toggle('dark-mode');
 
